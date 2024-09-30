@@ -1,10 +1,11 @@
 import { useState, useRef } from "react";
 import "../assets/css/app.css";
-
+import { useNavigate } from "react-router-dom";
 function App() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
+  const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
   const handleChange = (value, index) => {
     const newCode = [...code];
@@ -38,7 +39,7 @@ function App() {
       body: JSON.stringify({ code: reqCode }),
     });
     if (response.ok) {
-      setMessage("Verification successful!");
+      navigate("/success");
     } else {
       setMessage("Verification failed. Please try again.");
     }
@@ -52,18 +53,14 @@ function App() {
           <div onPaste={handlePaste}>
             {code.map((item, index) => {
               return (
-                <>
-                  <input
-                    key={index}
-                    type="text"
-                    value={item}
-                    maxLength="1"
-                    onChange={(event) =>
-                      handleChange(event.target.value, index)
-                    }
-                    ref={(el) => (inputRefs.current[index] = el)}
-                  />
-                </>
+                <input
+                  key={index}
+                  type="text"
+                  value={item}
+                  maxLength="1"
+                  onChange={(event) => handleChange(event.target.value, index)}
+                  ref={(el) => (inputRefs.current[index] = el)}
+                />
               );
             })}
           </div>
@@ -76,7 +73,7 @@ function App() {
         </form>
       </div>
       <p className="message">
-        Message: <span>{message}</span>
+        Error Message: <span>{message}</span>
       </p>
     </>
   );
