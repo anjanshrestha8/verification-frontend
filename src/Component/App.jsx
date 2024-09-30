@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
 import "../assets/css/app.css";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
-  const [message, setMessage] = useState("");
+  // const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -41,12 +43,21 @@ function App() {
     if (response.ok) {
       navigate("/success");
     } else {
-      setMessage("Verification failed. Please try again.");
+      toast.error("Invalid Verification code!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   };
 
   return (
-    <>
+    <div className="app-wrapper">
       <h1>Enter Verification Code</h1>
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
@@ -55,6 +66,7 @@ function App() {
               return (
                 <input
                   key={index}
+                  autoFocus={index === 0}
                   type="text"
                   value={item}
                   maxLength="1"
@@ -72,10 +84,9 @@ function App() {
           </div>
         </form>
       </div>
-      <p className="message">
-        Error Message: <span>{message}</span>
-      </p>
-    </>
+
+      <ToastContainer />
+    </div>
   );
 }
 

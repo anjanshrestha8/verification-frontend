@@ -1,10 +1,14 @@
+import Confetti from "react-confetti";
 function Success() {
   return (
     <>
       <div className="success-wrapper">
-        <h1>This is Success Route...</h1>
-
-        <p> Congratulation 🏆🏆🏆🏆!! You have a verified code ✅</p>
+        <Confetti
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={50}
+        />
+        <h3> Congratulation!Your code is valid.</h3>
       </div>
     </>
   );
