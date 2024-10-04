@@ -10,6 +10,7 @@ function App() {
   const navigate = useNavigate();
 
   const apiUrl = import.meta.env.VITE_API_URL;
+
   const handleChange = (value, index) => {
     const newCode = [...code];
     newCode[index] = value;
@@ -31,6 +32,7 @@ function App() {
     const lastIndex = Math.min(pastedData.length - 1, newCode.length - 1);
     inputRefs.current[lastIndex]?.focus();
   };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const reqCode = code.join("");
