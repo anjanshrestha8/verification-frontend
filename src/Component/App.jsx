@@ -8,6 +8,7 @@ function App() {
   // const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
+
   const apiUrl = import.meta.env.VITE_API_URL;
   const handleChange = (value, index) => {
     const newCode = [...code];
