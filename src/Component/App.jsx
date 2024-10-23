@@ -8,8 +8,7 @@ function App() {
   // const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
-
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const apiUrl = import.meta.env.VITE_API_URL; // enviroment variable
 
   // update date
   const updateCode = (index, value, currentCode) => {
@@ -37,7 +36,7 @@ function App() {
     });
     return updatedCode;
   };
-  // handel paste
+  // handel paste fucntion
   const handlePaste = (e, index) => {
     const pastedData = e.clipboardData.getData("text").split("");
     setCode((prevCode) => handlePasteData(pastedData, index, prevCode));
