@@ -3,21 +3,18 @@ import "../assets/css/app.css";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   const [code, setCode] = useState(["", "", "", "", "", ""]);
-  // const [message, setMessage] = useState("");
   const inputRefs = useRef([]);
   const navigate = useNavigate();
-
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  // update date
   const updateCode = (index, value, currentCode) => {
-    console.log(currentCode);
     return currentCode.map((char, i) => (i === index ? value : char));
   };
 
-  const handleChange = (value, index) => {
+  const handleInputChange = (value, index) => {
     setCode((prevCode) => {
       const newCode = updateCode(index, value, prevCode);
       return newCode;
@@ -27,7 +24,6 @@ function App() {
     }
   };
 
-  //update pasted data
   const handlePasteData = (pastedData, index, currentCode) => {
     const updatedCode = [...currentCode];
     pastedData.slice(0, 6).forEach((char, i) => {
@@ -37,14 +33,14 @@ function App() {
     });
     return updatedCode;
   };
-  // handel paste
+
   const handlePaste = (e, index) => {
     const pastedData = e.clipboardData.getData("text").split("");
     setCode((prevCode) => handlePasteData(pastedData, index, prevCode));
     const lastIndex = Math.min(pastedData.length - 1 + index, code.length - 1);
     inputRefs.current[lastIndex]?.focus();
   };
-  // verify Code function
+
   const verifyCode = async (reqCode) => {
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -55,7 +51,7 @@ function App() {
     });
     return response.ok;
   };
-  // handle submit function
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const reqCode = code.join("");
@@ -82,27 +78,22 @@ function App() {
       <div className="form-wrapper">
         <form onSubmit={handleSubmit}>
           <div>
-            {code.map((item, index) => {
-              return (
-                <input
-                  key={index}
-                  autoFocus={index === 0}
-                  type="text"
-                  value={item}
-                  maxLength="1"
-                  onChange={(event) => handleChange(event.target.value, index)}
-                  onPaste={(event) => {
-                    handlePaste(event, index);
-                  }}
-                  ref={(el) => (inputRefs.current[index] = el)}
-                />
-              );
-            })}
+            {code.map((item, index) => (
+              <input
+                key={index}
+                autoFocus={index === 0}
+                type="text"
+                value={item}
+                maxLength="1"
+                onChange={(e) => handleInputChange(e.target.value, index)}
+                onPaste={(e) => handlePaste(e, index)}
+                ref={(el) => (inputRefs.current[index] = el)}
+              />
+            ))}
           </div>
           <br />
           <br />
           <div className="button-wrapper">
-            {" "}
             <button type="submit">Submit</button>
           </div>
         </form>
